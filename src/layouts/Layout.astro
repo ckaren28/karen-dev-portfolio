@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+const { title = "Karen Dettmar", description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body class="min-h-screen bg-white text-zinc-900 antialiased">
+    <header class="sticky top-0 z-10 border-b border-zinc-100 bg-white/90 backdrop-blur-sm">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <a href="/" class="text-sm font-semibold tracking-tight text-zinc-900 transition-opacity hover:opacity-60">
+          Karen Dettmar
+        </a>
+        <nav class="flex items-center gap-6 text-sm text-zinc-400">
+          <a class="transition-colors hover:text-zinc-900" href="/demos">Demos</a>
+          <a class="transition-colors hover:text-zinc-900" href="/about">About</a>
+          <a class="transition-colors hover:text-zinc-900" href="/resume">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-6 py-16">
+      <slot />
+    </main>
+
+    <footer class="border-t border-zinc-100">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-8 text-xs text-zinc-400">
+        <span>© 2025 Karen Dettmar</span>
+        <div class="flex gap-5">
+          <a class="transition-colors hover:text-zinc-700" href="mailto:karen.dettmar@gmail.com">Email</a>
+          <a class="transition-colors hover:text-zinc-700" href="https://linkedin.com/in/kdettmar" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

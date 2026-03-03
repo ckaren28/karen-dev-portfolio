@@ -1,0 +1,65 @@
+---
+import SiteLayout from "../../layouts/Layout.astro";
+
+const demos = [
+  {
+    title: "Museum Label Generator",
+    desc: "Draft wall labels, kids labels, audio scripts, alt text, and curator notes from source text.",
+    href: "/demos/museum-label-generator",
+    tag: "Museums",
+    live: true,
+  },
+  {
+    title: "Creative Process Companion",
+    desc: "Structured ideation prompts for artists and designers.",
+    href: "/demos/creative-process-companion",
+    tag: "Artists",
+    live: false,
+  },
+  {
+    title: "Prompt Lab",
+    desc: "Interactive prompt experiments for creative coding workshops.",
+    href: "/demos/prompt-lab",
+    tag: "Creative Coding",
+    live: false,
+  },
+];
+---
+
+<SiteLayout title="Demos — Karen Dettmar">
+  <div class="max-w-2xl">
+    <p class="text-xs font-semibold uppercase tracking-widest text-zinc-400">Work</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight">Demos</h1>
+    <p class="mt-3 text-lg text-zinc-500 leading-relaxed">
+      Applied AI prototypes for creative communities and cultural institutions.
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-4 md:grid-cols-2">
+    {demos.map((d) => (
+      <a
+        href={d.href}
+        class={`group rounded-2xl border p-6 transition-all ${
+          d.live
+            ? "border-zinc-200 bg-white shadow-sm hover:border-zinc-300 hover:shadow-md"
+            : "border-dashed border-zinc-200 opacity-60 pointer-events-none"
+        }`}
+      >
+        <div class="flex items-start justify-between gap-4">
+          <h2 class="text-base font-semibold">{d.title}</h2>
+          {d.live ? (
+            <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">Live</span>
+          ) : (
+            <span class="shrink-0 rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-500">Soon</span>
+          )}
+        </div>
+        <p class="mt-2 text-sm leading-6 text-zinc-500">{d.desc}</p>
+        {d.live && (
+          <div class="mt-5 flex items-center gap-1.5 text-sm font-medium text-zinc-900 transition-all group-hover:gap-2.5">
+            View demo <span>→</span>
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+</SiteLayout>

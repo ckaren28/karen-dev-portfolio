@@ -1,0 +1,19 @@
+---
+import SiteLayout from "../../layouts/Layout.astro";
+// @ts-ignore - Astro language server generates a conflicting local declaration for React component tags
+import MuseumLabelGenerator from "../../components/MuseumLabelGenerator.tsx";
+---
+
+<SiteLayout title="Museum Label Generator — Karen Dettmar" description="A demo for drafting museum interpretation text with human control.">
+  <div class="flex flex-col gap-3">
+    <p class="text-sm text-zinc-600"><a class="underline hover:text-zinc-900" href="/demos">Demos</a> / Museum Label Generator</p>
+    <h1 class="text-3xl font-semibold tracking-tight">Museum Label Generator</h1>
+    <p class="max-w-3xl text-zinc-600 leading-7">
+      A prototype exploring how language models can support interpretive writing without flattening nuance.
+    </p>
+  </div>
+
+  <div class="mt-8">
+    <MuseumLabelGenerator client:load />
+  </div>
+</SiteLayout>
