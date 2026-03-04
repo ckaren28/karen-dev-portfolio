@@ -4,3 +4,10 @@
 
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[functions."museum-label"]
+  timeout = 26
+
+[functions."creative-process"]
+  timeout = 26

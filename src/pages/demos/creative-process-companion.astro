@@ -1,0 +1,418 @@
+---
+import SiteLayout from "../../layouts/Layout.astro";
+// @ts-ignore - Astro language server bug: generates a conflicting local declaration for React component tags
+import CreativeProcessCompanion from "../../components/CreativeProcessCompanion.tsx";
+---
+
+<SiteLayout title="Creative Process Companion — Karen Dettmar" description="Workshop-ready creative ideation companion.">
+  <div class="flex flex-col gap-3">
+    <p class="text-sm text-zinc-600">
+      <a class="underline hover:text-zinc-900" href="/demos">Demos</a> / Creative Process Companion
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight">Creative Process Companion</h1>
+    <p class="max-w-3xl text-zinc-600 leading-7">
+      A guided ideation tool for artists and designers: three directions, constraints, materials/technique ideas,
+      a mini plan, and critique questions.
+    </p>
+  </div>
+
+  <div class="mt-8 grid gap-8 lg:grid-cols-2">
+    <!-- FORM -->
+    <section class="rounded-2xl border border-zinc-200 p-6 shadow-sm">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-semibold">Inputs</h2>
+          <p class="mt-1 text-sm text-zinc-600">Pick a medium, set a theme, and generate three distinct directions.</p>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-zinc-700">
+          <input id="cpc-workshop" type="checkbox" class="h-4 w-4" />
+          Workshop mode
+        </label>
+      </div>
+
+      <div id="cpc-presets" class="mt-4 hidden">
+        <div class="text-xs font-semibold text-zinc-700">Example prompts</div>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <button data-preset="repair" type="button" class="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 hover:border-zinc-300 hover:text-zinc-900">
+            Fashion: repair as narrative
+          </button>
+          <button data-preset="intimacy" type="button" class="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 hover:border-zinc-300 hover:text-zinc-900">
+            Installation: public intimacy
+          </button>
+          <button data-preset="random" type="button" class="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 hover:border-zinc-300 hover:text-zinc-900">
+            Creative coding: controlled randomness
+          </button>
+          <button data-preset="memory" type="button" class="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 hover:border-zinc-300 hover:text-zinc-900">
+            Film: memory as unreliable edit
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-5 grid gap-4">
+        <label class="grid gap-1 text-sm">
+          <span class="text-zinc-700">Medium</span>
+          <select id="cpc-medium" class="rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none focus:border-zinc-400">
+            <option value="fashion" selected>fashion</option>
+            <option value="painting">painting</option>
+            <option value="installation">installation</option>
+            <option value="film">film</option>
+            <option value="creative coding">creative coding</option>
+            <option value="writing">writing</option>
+          </select>
+        </label>
+
+        <label class="grid gap-1 text-sm">
+          <span class="text-zinc-700">Theme (required)</span>
+          <input id="cpc-theme" class="rounded-xl border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-400"
+            placeholder="e.g., repair as autobiography, public intimacy, authored noise..." />
+        </label>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="grid gap-1 text-sm">
+            <span class="text-zinc-700">Mood</span>
+            <select id="cpc-mood" class="rounded-xl border border-zinc-200 px-3 py-2 text-sm outline-none focus:border-zinc-400">
+              <option value="quiet">quiet</option>
+              <option value="playful">playful</option>
+              <option value="tense">tense</option>
+              <option value="tender">tender</option>
+              <option value="bold">bold</option>
+              <option value="melancholic">melancholic</option>
+              <option value="curious" selected>curious</option>
+            </select>
+          </label>
+
+          <label class="grid gap-1 text-sm">
+            <span class="text-zinc-700">Context (optional)</span>
+            <input id="cpc-context" class="rounded-xl border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-400"
+              placeholder="critique, workshop, gallery, class assignment..." />
+          </label>
+        </div>
+
+        <label class="flex items-center gap-2 text-sm text-zinc-700">
+          <input id="cpc-grounded" type="checkbox" class="h-4 w-4" checked />
+          Grounded mode (no invented references)
+        </label>
+
+        <button
+          id="cpc-generate"
+          class="mt-2 inline-flex items-center justify-center rounded-2xl bg-zinc-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-500"
+          type="button"
+          disabled
+        >
+          Generate directions
+        </button>
+
+        <div id="cpc-error" class="hidden rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"></div>
+
+        <div id="cpc-facilitator" class="mt-2 hidden rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-700">
+          <div class="font-semibold text-zinc-800">Facilitator notes</div>
+          <ol class="mt-2 list-decimal space-y-1 pl-5">
+            <li>Pick a preset or write your own theme.</li>
+            <li>Generate, then choose one concept and rewrite the constraints as rules you’ll actually follow.</li>
+            <li>Switch mood and regenerate. What changes? What stays yours?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="rounded-2xl border border-zinc-200 p-6 shadow-sm">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-semibold">Output</h2>
+          <p class="mt-1 text-sm text-zinc-600">Studio-ready directions + constraints + critique prompts.</p>
+        </div>
+
+        <button id="cpc-toggle-details" type="button" class="text-xs font-semibold underline text-zinc-600 hover:text-zinc-900">
+          Show prompt & architecture
+        </button>
+      </div>
+
+      <div id="cpc-empty" class="mt-6 rounded-xl bg-zinc-50 p-4 text-sm text-zinc-600">
+        Generate to see three concepts, constraints, a 7-day plan, and critique questions.
+      </div>
+
+      <div id="cpc-loading" class="mt-6 hidden rounded-xl bg-zinc-50 p-4 text-sm text-zinc-600">Working…</div>
+
+      <div id="cpc-output" class="mt-6 hidden space-y-8">
+        <div>
+          <h3 class="text-sm font-semibold text-zinc-800">Concept directions</h3>
+          <div id="cpc-concepts" class="mt-3 space-y-4"></div>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="rounded-2xl border border-zinc-200 p-4">
+            <h3 class="text-sm font-semibold text-zinc-800">Constraints</h3>
+            <ul id="cpc-constraints" class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700"></ul>
+          </div>
+          <div class="rounded-2xl border border-zinc-200 p-4">
+            <h3 class="text-sm font-semibold text-zinc-800">Materials / techniques</h3>
+            <ul id="cpc-materials" class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700"></ul>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-zinc-200 p-4">
+          <h3 class="text-sm font-semibold text-zinc-800">7-day mini plan</h3>
+          <ul id="cpc-plan" class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700"></ul>
+        </div>
+
+        <div class="rounded-2xl border border-zinc-200 p-4">
+          <h3 class="text-sm font-semibold text-zinc-800">Critique questions</h3>
+          <ul id="cpc-questions" class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700"></ul>
+        </div>
+
+        <div id="cpc-discussion" class="hidden rounded-2xl border border-zinc-200 p-4">
+          <h3 class="text-sm font-semibold text-zinc-800">Discussion prompts</h3>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700">
+            <li>Which parts feel specific to you vs. “autocomplete”?</li>
+            <li>What would you remove to make the concept sharper?</li>
+            <li>What constraint makes the work more authored?</li>
+            <li>What’s the most physical next action you can take today?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="cpc-details" class="mt-6 hidden rounded-2xl border border-zinc-200 p-4 text-sm">
+        <h3 class="font-semibold text-zinc-800">Prompt & architecture</h3>
+
+        <div class="mt-3">
+          <div class="text-xs font-semibold text-zinc-700">System prompt</div>
+          <pre class="mt-2 whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-xs text-zinc-700" id="cpc-system"></pre>
+        </div>
+
+        <div class="mt-4">
+          <div class="text-xs font-semibold text-zinc-700">User prompt template</div>
+          <pre class="mt-2 whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-xs text-zinc-700" id="cpc-user"></pre>
+        </div>
+
+        <div class="mt-4">
+          <div class="text-xs font-semibold text-zinc-700">Architecture</div>
+          <pre class="mt-2 whitespace-pre-wrap rounded-xl bg-zinc-50 p-3 text-xs text-zinc-700">
+User input → Browser UI
+        ↓
+Netlify Function (secure)
+        ↓
+Anthropic API → JSON
+        ↓
+Render concept cards + critique tools
+          </pre>
+        </div>
+      </div>
+    </section>
+  </div>
+
+ <script>
+(() => {
+  const $ = (id: string) => document.getElementById(id);
+
+  const workshop = $("cpc-workshop") as HTMLInputElement | null;
+  const presetsWrap = $("cpc-presets");
+  const facilitator = $("cpc-facilitator");
+  const discussion = $("cpc-discussion");
+  const details = $("cpc-details");
+  const toggleDetails = $("cpc-toggle-details");
+
+  const medium = $("cpc-medium") as HTMLSelectElement | null;
+  const theme = $("cpc-theme") as HTMLInputElement | null;
+  const mood = $("cpc-mood") as HTMLSelectElement | null;
+  const context = $("cpc-context") as HTMLInputElement | null;
+  const grounded = $("cpc-grounded") as HTMLInputElement | null;
+
+  const btn = $("cpc-generate") as HTMLButtonElement | null;
+  const err = $("cpc-error");
+
+  const empty = $("cpc-empty");
+  const loading = $("cpc-loading");
+  const output = $("cpc-output");
+
+  const sysBlock = $("cpc-system");
+  const userBlock = $("cpc-user");
+
+  const SYSTEM_PROMPT = `You are a creative studio mentor. Help the user generate original directions and next steps.
+Constraints:
+- Be specific, not generic.
+- Do not invent real people, exhibitions, or artworks as references.
+- Keep suggestions aligned to the chosen medium and theme.
+- Return valid JSON only.`;
+
+  const USER_TEMPLATE = `Medium: {{medium}}
+Theme: {{theme}}
+Mood: {{mood}}
+Context: {{context}}
+Grounded mode: {{grounded}}
+
+Return JSON:
+concepts (3), constraints (5), materials (6), plan (7), critique_questions (8)
+Each concept: title, premise, steps (4–6), risk, stretch`;
+
+  if (sysBlock) sysBlock.textContent = SYSTEM_PROMPT;
+  if (userBlock) userBlock.textContent = USER_TEMPLATE;
+
+  const presets: Record<string, { medium: string; theme: string; mood: string; context: string }> = {
+    repair: {
+      medium: "fashion",
+      theme: "repair as autobiography",
+      mood: "tender",
+      context: "A small capsule piece for a critique: the garment should carry visible evidence of making and remaking."
+    },
+    intimacy: {
+      medium: "installation",
+      theme: "public intimacy",
+      mood: "quiet",
+      context: "A participatory installation in a community space. Visitors should leave a trace, but consent and privacy matter."
+    },
+    random: {
+      medium: "creative coding",
+      theme: "controlled randomness / authored noise",
+      mood: "curious",
+      context: "A workshop demo where participants tweak parameters and see how authorship shifts with constraints."
+    },
+    memory: {
+      medium: "film",
+      theme: "memory as an unreliable edit",
+      mood: "melancholic",
+      context: "Short experimental film (1–2 minutes). Emphasize rhythm, repetition, and what’s omitted."
+    }
+  };
+
+  function validate() {
+    if (btn) btn.disabled = (theme?.value || "").trim().length < 3;
+  }
+  theme?.addEventListener("input", validate);
+  validate();
+
+  workshop?.addEventListener("change", () => {
+    const on = workshop.checked;
+    presetsWrap?.classList.toggle("hidden", !on);
+    facilitator?.classList.toggle("hidden", !on);
+    discussion?.classList.toggle("hidden", !on);
+
+    if (on) {
+      details?.classList.remove("hidden");
+      if (toggleDetails) toggleDetails.textContent = "Hide prompt & architecture";
+    }
+  });
+
+  presetsWrap?.addEventListener("click", (e) => {
+    const b = (e.target as Element).closest("button[data-preset]");
+    if (!b) return;
+    const key = b.getAttribute("data-preset") || "";
+    const p = presets[key];
+    if (!p) return;
+    if (medium) medium.value = p.medium;
+    if (theme) theme.value = p.theme;
+    if (mood) mood.value = p.mood;
+    if (context) context.value = p.context;
+    validate();
+  });
+
+  toggleDetails?.addEventListener("click", () => {
+    const hidden = details?.classList.contains("hidden") ?? true;
+    details?.classList.toggle("hidden", !hidden);
+    if (toggleDetails) toggleDetails.textContent = hidden ? "Hide prompt & architecture" : "Show prompt & architecture";
+  });
+
+  btn?.addEventListener("click", async () => {
+    err?.classList.add("hidden");
+    empty?.classList.add("hidden");
+    output?.classList.add("hidden");
+    loading?.classList.remove("hidden");
+
+    try {
+      const resp = await fetch("/.netlify/functions/creative-process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          medium: medium?.value,
+          theme: theme?.value,
+          mood: mood?.value,
+          context: context?.value,
+          grounded: grounded?.checked
+        })
+      });
+
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data?.error || "Request failed.");
+
+      // Concepts
+      const conceptsWrap = $("cpc-concepts");
+      if (conceptsWrap) conceptsWrap.innerHTML = "";
+      (data.concepts || []).forEach((c: Record<string, any>, i: number) => {
+        const box = document.createElement("div");
+        box.className = "rounded-2xl border border-zinc-200 p-4";
+        box.innerHTML = `
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="text-sm font-semibold"></div>
+              <div class="mt-1 text-sm text-zinc-700"></div>
+            </div>
+            <button type="button" class="text-xs font-semibold underline text-zinc-700 hover:text-zinc-900">Copy</button>
+          </div>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-700"></ul>
+          <div class="mt-3 grid gap-2 text-sm text-zinc-700">
+            <div><span class="font-semibold">Risk:</span> <span class="c-risk"></span></div>
+            <div><span class="font-semibold">Stretch:</span> <span class="c-stretch"></span></div>
+          </div>
+        `;
+        const titleEl = box.querySelector(".text-sm.font-semibold");
+        if (titleEl) titleEl.textContent = c.title || `Concept ${i + 1}`;
+        const premiseEl = box.querySelector(".mt-1.text-sm");
+        if (premiseEl) premiseEl.textContent = c.premise || "";
+        const ul = box.querySelector("ul");
+        (c.steps || []).forEach((s: string) => {
+          const li = document.createElement("li");
+          li.textContent = s;
+          ul?.appendChild(li);
+        });
+        const riskEl = box.querySelector(".c-risk");
+        if (riskEl) riskEl.textContent = c.risk || "";
+        const stretchEl = box.querySelector(".c-stretch");
+        if (stretchEl) stretchEl.textContent = c.stretch || "";
+
+        box.querySelector("button")?.addEventListener("click", () => {
+          const text = [
+            c.title || "",
+            "",
+            c.premise || "",
+            "",
+            "Steps:",
+            ...(c.steps || []).map((x: string) => `- ${x}`),
+            "",
+            `Risk: ${c.risk || ""}`,
+            `Stretch: ${c.stretch || ""}`
+          ].join("\n");
+          navigator.clipboard.writeText(text);
+        });
+
+        conceptsWrap?.appendChild(box);
+      });
+
+      // Lists
+      const fillList = (id: string, items: string[]) => {
+        const ul = $(id);
+        if (!ul) return;
+        ul.innerHTML = "";
+        (items || []).forEach((x) => {
+          const li = document.createElement("li");
+          li.textContent = x;
+          ul.appendChild(li);
+        });
+      };
+
+      fillList("cpc-constraints", data.constraints);
+      fillList("cpc-materials", data.materials);
+      fillList("cpc-plan", data.plan);
+      fillList("cpc-questions", data.critique_questions);
+
+      loading?.classList.add("hidden");
+      output?.classList.remove("hidden");
+    } catch (e) {
+      loading?.classList.add("hidden");
+      empty?.classList.remove("hidden");
+      if (err) err.textContent = (e as Error)?.message || "Something went wrong.";
+      err?.classList.remove("hidden");
+    }
+  });
+})();
+</script>
+</SiteLayout>

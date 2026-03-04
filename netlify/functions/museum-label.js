@@ -76,7 +76,7 @@ Rules:
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1100,
+        max_tokens: 2048,
         temperature: 0.5,
         system,
         messages: [{ role: "user", content: user }],
@@ -95,15 +95,17 @@ Rules:
       .join("\n")
       .trim();
 
+    // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+    const cleaned = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+
     let data;
     try {
-      data = JSON.parse(text);
+      data = JSON.parse(cleaned);
     } catch {
-      // If model ever returns extra text, try to salvage JSON substring
-      const start = text.indexOf("{");
-      const end = text.lastIndexOf("}");
+      const start = cleaned.indexOf("{");
+      const end = cleaned.lastIndexOf("}");
       if (start >= 0 && end > start) {
-        data = JSON.parse(text.slice(start, end + 1));
+        data = JSON.parse(cleaned.slice(start, end + 1));
       } else {
         return { statusCode: 500, body: JSON.stringify({ error: "Model returned invalid JSON. Try again." }) };
       }
