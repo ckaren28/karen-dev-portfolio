@@ -3,14 +3,40 @@ import SiteLayout from "../layouts/Layout.astro";
 ---
 
 <SiteLayout title="About — Karen Dettmar">
-  <div class="max-w-2xl">
-    <p class="text-xs font-semibold uppercase tracking-widest text-zinc-400">About</p>
-    <h1 class="mt-4 text-4xl font-semibold tracking-tight">Karen Dettmar</h1>
-    <p class="mt-5 text-lg text-zinc-600 leading-relaxed">
-      Creative Technologist with a background in developer advocacy and front-end engineering.
-      I build demos, lead workshops, and translate APIs into tools people actually use —
-      especially for creative communities and cultural institutions.
-    </p>
+  <div class="flex flex-col gap-10 md:flex-row md:items-start md:gap-14">
+    <div class="flex-1">
+      <p class="text-xs font-semibold uppercase tracking-widest text-zinc-400">About</p>
+      <h1 class="mt-4 text-4xl font-semibold tracking-tight">Karen Dettmar</h1>
+      <p class="mt-5 text-lg text-zinc-600 leading-relaxed">
+        Creative Technologist with a background in developer advocacy and front-end engineering.
+        I build demos, lead workshops, and translate APIs into tools people actually use —
+        especially for creative communities and cultural institutions.
+      </p>
+    </div>
+
+    <!-- Photo collage -->
+    <div class="w-full md:w-80 shrink-0">
+      <div class="relative h-64 md:h-80">
+        <img
+          src="/photo-1.jpg"
+          alt="Karen Dettmar speaking at a conference"
+          class="photo-card absolute inset-0 h-full w-full object-contain rounded-xl transition-all duration-700"
+          style="transform: rotate(-2.5deg) translate(-18px, 12px); z-index: 3; opacity: 1;"
+        />
+        <img
+          src="/photo-2.jpg"
+          alt="Karen Dettmar presenting at a workshop"
+          class="photo-card absolute inset-0 h-full w-full object-contain rounded-xl transition-all duration-700"
+          style="transform: rotate(1.8deg) translate(14px, -10px); z-index: 2; opacity: 0.35;"
+        />
+        <img
+          src="/photo-3.jpg"
+          alt="Karen Dettmar at a community session"
+          class="photo-card absolute inset-0 h-full w-full object-contain rounded-xl transition-all duration-700"
+          style="transform: rotate(4deg) translate(4px, 6px); z-index: 1; opacity: 0.35;"
+        />
+      </div>
+    </div>
   </div>
 
   <div class="mt-14 grid gap-5 md:grid-cols-2">
@@ -50,4 +76,24 @@ import SiteLayout from "../layouts/Layout.astro";
       </ul>
     </div>
   </div>
+
+  <script>
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".photo-card"));
+    const total = cards.length;
+    let current = 0;
+
+    function activate(index: number) {
+      cards.forEach((card, i) => {
+        const isActive = i === index;
+        card.style.opacity = isActive ? "1" : "0.35";
+        card.style.zIndex = isActive ? String(total + 1) : String(total - i);
+      });
+    }
+
+    activate(0);
+    setInterval(() => {
+      current = (current + 1) % total;
+      activate(current);
+    }, 4000);
+  </script>
 </SiteLayout>
