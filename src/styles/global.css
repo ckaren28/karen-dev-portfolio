@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+/* Dark mode overrides — must be after the Tailwind import to win the cascade */
+html.dark .text-zinc-900,
+html.dark .text-zinc-800,
+html.dark .text-zinc-700 { color: var(--fg) !important; }
+
+html.dark .text-zinc-600,
+html.dark .text-zinc-500,
+html.dark .text-zinc-400,
+html.dark .text-zinc-300 { color: var(--fg-muted) !important; }
+
+html.dark .bg-white      { background-color: color-mix(in srgb, var(--fg) 8%,  var(--bg)) !important; }
+html.dark .bg-zinc-50    { background-color: color-mix(in srgb, var(--fg) 6%,  var(--bg)) !important; }
+html.dark .bg-zinc-100   { background-color: color-mix(in srgb, var(--fg) 12%, var(--bg)) !important; }
+html.dark .bg-zinc-900   { background-color: var(--fg) !important; }
+
+html.dark .hover\:bg-zinc-800:hover,
+html.dark .hover\:bg-zinc-700:hover { background-color: color-mix(in srgb, var(--fg) 85%, var(--bg)) !important; }
+html.dark .hover\:bg-zinc-50:hover  { background-color: color-mix(in srgb, var(--fg) 6%,  var(--bg)) !important; }
+
+html.dark .text-white { color: var(--bg) !important; }
+
+html.dark .border-zinc-100,
+html.dark .border-zinc-200,
+html.dark .border-zinc-300 { border-color: color-mix(in srgb, var(--fg) 18%, var(--bg)) !important; }
+html.dark .hover\:border-zinc-300:hover { border-color: color-mix(in srgb, var(--fg) 30%, var(--bg)) !important; }
+
+html.dark .shadow-sm { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3) !important; }

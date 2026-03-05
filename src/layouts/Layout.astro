@@ -45,29 +45,6 @@ const { title = "Karen Dettmar", description } = Astro.props;
         color: var(--fg);
       }
 
-      /* Dark mode overrides for hardcoded Tailwind zinc utilities */
-      html.dark .text-zinc-900,
-      html.dark .text-zinc-800,
-      html.dark .text-zinc-700 { color: var(--fg); }
-
-      html.dark .text-zinc-600,
-      html.dark .text-zinc-500,
-      html.dark .text-zinc-400 { color: var(--fg-muted); }
-
-      html.dark .bg-white { background-color: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
-      html.dark .bg-zinc-100 { background-color: color-mix(in srgb, var(--fg) 12%, var(--bg)); }
-      html.dark .bg-zinc-900 { background-color: var(--fg); }
-      html.dark .hover\:bg-zinc-800:hover,
-      html.dark .hover\:bg-zinc-700:hover { background-color: color-mix(in srgb, var(--fg) 85%, var(--bg)); }
-      html.dark .text-white { color: var(--bg); }
-
-      html.dark .border-zinc-100,
-      html.dark .border-zinc-200,
-      html.dark .border-zinc-300 { border-color: color-mix(in srgb, var(--fg) 18%, var(--bg)); }
-      html.dark .hover\:border-zinc-300:hover { border-color: color-mix(in srgb, var(--fg) 30%, var(--bg)); }
-
-      html.dark .hover\:bg-zinc-50:hover { background-color: color-mix(in srgb, var(--fg) 6%, var(--bg)); }
-      html.dark .shadow-sm { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3); }
     </style>
     <!-- init theme before paint to avoid flash -->
     <script is:inline>
